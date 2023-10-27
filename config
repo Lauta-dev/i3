@@ -5,29 +5,42 @@ set $alt Mod1
 # Fuente tipografia/letra
 font pango:monospace 8
 
-########################################################################
-###                      Iniciar applicaciones                       ###
-########################################################################
-exec --no-startup-id polybar -c ~/.config/polybar/config.ini
+#--------------------------------------------------------------------#
+#                      Iniciar applicaciones                         #
+#--------------------------------------------------------------------#
+
+# exec --no-startup-id polybar -c ~/.config/polybar/config.ini
+#exec --no-startup-id $HOME/.fehbg
+#exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 exec --no-startup-id nm-applet
-exec --no-startup-id blueman-applet
+#exec --no-startup-id blueman-applet
 exec --no-startup-id xfce4-power-manager
-exec --no-startup-id nitrogen --restore
-exec --no-startup-id picom --config /home/lau/.config/i3/picom-original.conf
+#exec --no-startup-id nitrogen --restore
+#exec --no-startup-id picom
 exec --no-startup-id dunst
-exec --no-startup-id xfsettingsd
+exec --no-startup-id xfsettingsd --replace --daemon -D
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-exec --no-startup-id ksuperkey -e 'Super_L=Alt_L|F1' 
+#exec --no-startup-id ksuperkey -e 'Super_L=Alt_L|F1'
+#exec --no-startup-id ksuperkey -e 'Super_L=Alt_L|F1' &
+#exec --no-startup-id ksuperkey -e 'Super_R=Alt_L|F1' &
+exec  --no-startup-id mpd
+
+# Cambiar idioma al inglés
+#exec --no-startup-id export LANG=en_US.UTF-8
+#exec --no-startup-id export LC_MESSAGE=en_EN.UTF-8
 
 ########################################################################
 ###                          Controlar volumen                       ###
 ########################################################################
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +1%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -1%
 bindsym XF86AudioMute        exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
 
-bindsym XF86AudioPlay  exec --no-startup-id cmus-remote -p
-bindsym XF86AudioPause exec --no-startup-id cmus-remote -u
+#-----------------------------------------------------------------#
+# CONTROLAR CMUS                                                  #
+#-----------------------------------------------------------------#
+#bindsym XF86AudioPlay  exec --no-startup-id cmus-remote -p
+#bindsym XF86AudioPause exec --no-startup-id cmus-remote -u
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -35,20 +48,22 @@ floating_modifier $mod
 ########################################################################
 ###                    Lanzar applicaciones                          ###
 ########################################################################
-bindsym $mod+Return exec xfce4-terminal
-bindsym $mod+Control+w exec firefox
-bindsym $mod+Control+f exec thunar
-bindsym $mod+Control+m exec xfce4-terminal -e cmus
-bindsym $mod+Control+n exec ~/App/obsidian.AppImage
-bindsym $mod+Control+c exec codium
-bindsym $mod+Control+e exec nvim
+bindsym $mod+Return     exec xfce4-terminal
+bindsym $mod+Control+w  exec firefox
+bindsym $mod+Control+f  exec thunar
+bindsym $mod+Control+m  exec xfce4-terminal -e ncmpcpp
+bindsym $mod+Control+n  exec ~/App/obsidian.AppImage
+bindsym $mod+Control+c  exec codium
+bindsym $mod+Control+e  exec nvim
 
 #####################################
 #####        Lanzar rofi        #####
 #####################################
-bindsym $alt+F1           exec --no-startup-id rofi -show drun -theme ~/.config/rofi/launchers/type-4/style-5.rasi
 bindsym $mod+x            exec --no-startup-id ~/.config/rofi/powermenu/type-1/powermenu.sh
-bindsym $mod+Print        exec --no-startup-id ~/.config/rofi/applets/bin/cap.sh
+#bindsym $mod+d		  exec --no-startup-id rofi -show drun	
+
+bindsym $mod+m            exec --no-startup-id ~/.config/rofi/applets/bin/mpd.sh
+bindsym $mod+d            exec --no-startup-id ~/.config/rofi/launchers/type-2/launcher.sh
 
 #####################################
 #####      Matar programa       #####
@@ -58,9 +73,22 @@ bindsym $mod+q kill
 ########################################################################
 ###                          Controlar cmus                          ###
 ########################################################################
-bindsym $mod+F9 exec --no-startup-id ~/.config/i3/cmus-scripts/cmus-prev-notificacion.sh
-bindsym $mod+F10 exec --no-startup-id ~/.config/i3/cmus-scripts/cmus-toggle-notificacion.sh
-bindsym $mod+F11 exec --no-startup-id ~/.config/i3/cmus-scripts/cmus-next-notificacion.sh
+bindsym $mod+F9   exec --no-startup-id ~/.config/i3/script/cmus/selected-music.sh -n
+bindsym $mod+F10  exec --no-startup-id ~/.config/i3/script/cmus/toggle.sh
+bindsym $mod+F11  exec --no-startup-id ~/.config/i3/script/cmus/selected-music.sh -p
+
+########################################################################
+###                          Controlar MPD                           ###
+########################################################################
+#bindsym $mod+F9   exec --no-startup-id ~/.config/i3/script/mpd/selected_music.sh prev
+#bindsym $mod+F10  exec --no-startup-id ~/.config/i3/script/mpd/toggle.sh
+#bindsym $mod+F11  exec --no-startup-id ~/.config/i3/script/mpd/selected_music.sh next
+
+#############################################################################
+###                      Apagar/Reiniciar equipo                          ###
+#############################################################################
+bindsym $mod+$alt+Escape exec --no-startup-id systemctl poweroff
+bindsym $mod+Control+Escape exec --no-startup-id systemctl reboot
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -111,7 +139,7 @@ set $ws6 "6"
 set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
-set $ws0 "0"
+set $ws10 "10"
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -123,7 +151,7 @@ bindsym $mod+6 workspace number $ws6
 bindsym $mod+7 workspace number $ws7
 bindsym $mod+8 workspace number $ws8
 bindsym $mod+9 workspace number $ws9
-bindsym $mod+0 workspace number $ws0
+bindsym $mod+0 workspace number $ws10
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws1
@@ -135,7 +163,9 @@ bindsym $mod+Shift+6 move container to workspace number $ws6
 bindsym $mod+Shift+7 move container to workspace number $ws7
 bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
-bindsym $mod+Shift+0 move container to workspace number $ws0
+bindsym $mod+Shift+0 move container to workspace number $ws10
+
+#reload
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -152,10 +182,10 @@ mode "resize" {
         bindsym ntilde resize grow width 10 px or 10 ppt
 
         # same bindings, but for the arrow keys
-        bindsym Left   resize shrink width   10 px or 10 ppt
-        bindsym Down   resize grow height    10 px or 10 ppt
-        bindsym Up     resize shrink height  10 px or 10 ppt
-        bindsym Right  resize grow width     10 px or 10 ppt
+        bindsym Left   resize shrink width   2 px or 2 ppt
+        bindsym Down   resize grow height    2 px or 2 ppt
+        bindsym Up     resize shrink height  2 px or 2 ppt
+        bindsym Right  resize grow width     2 px or 2 ppt
 
         # back to normal: Enter or Escape or $mod+r
         bindsym Return mode "default"
@@ -169,16 +199,37 @@ bindsym $mod+r mode "resize"
 ###                                gaps                              ###
 ########################################################################
 
-for_window [class="^.*"] border pixel 3
+for_window [class="^.*"] border pixel 1
 
-gaps inner 7
+gaps inner 8
 gaps outer 2
 
-client.focused              #11111b #74c7ec #11111b
-client.unfocused            #11111b #fff    #11111b
-client.focused_inactive     #11111b #fff    #11111b
+client.focused              #000 #ffffff #ffffff
+
+client.unfocused            #000 #000 #000
+client.focused_inactive     #000 #000 #000
 
 hide_edge_borders vertical
 
 smart_borders on
 smart_gaps on
+
+bar {
+	status_command SCRIPT_DIR=~/.config/i3blocks/scripst i3blocks
+   		
+	tray_output primary
+
+	workspace_min_width 30px
+	padding 5px
+
+	colors{
+		background #eff1f5
+		statusline #11111b
+
+		# Va de este modo #Borde #Fondo #Texto		
+		focused_workspace   #04a5e5 #04a5e5 #11111b
+		#active_workspace
+		inactive_workspace  #bcc0cc #bcc0cc #11111b
+		urgent_workspace    #d20f39 #d20f39 #eff1f5
+	}
+}
